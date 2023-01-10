@@ -28,9 +28,9 @@ export class YamlFmtCommand extends CommandRunner {
         : path.resolve(process.cwd(), configPath)
       : "";
 
-    const { targets, ...fromFile }: Partial<SortOptions> =(_configPath
-      ? JSON.parse(fs.readFileSync(_configPath).toString())
-      : {})  as Partial<SortOptions>;
+    const { targets, ...fromFile }: Partial<SortOptions> = (
+      _configPath ? JSON.parse(fs.readFileSync(_configPath).toString()) : {}
+    ) as Partial<SortOptions>;
     const results = targetFiles.map((files) => {
       return applySortFiles(files, {
         all: all ?? fromFile.all,
@@ -40,8 +40,8 @@ export class YamlFmtCommand extends CommandRunner {
         targets,
       });
     });
-    await Promise.all(results)
-    console.log('done.')
+    await Promise.all(results);
+    console.log("done.");
   }
 
   @Option({
