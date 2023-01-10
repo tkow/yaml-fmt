@@ -58,7 +58,7 @@ properties:
     type: 'number'
   enumValue:
     type: object
-    enum: ['b', 'c', 'a'],
+    enum: ['a', 'b', 'c'],
 ```
 
 
