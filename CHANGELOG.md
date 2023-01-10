@@ -1,5 +1,11 @@
 # yaml-fmt
 
+## 0.0.7
+
+### Patch Changes
+
+- 6a45dcc: fix: root flag works
+
 ## 0.0.6
 
 ### Patch Changes
