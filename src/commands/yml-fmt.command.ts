@@ -79,7 +79,7 @@ export class YamlFmtCommand extends CommandRunner {
     flags: "-i --indent",
     name: "indent",
     description: "output indent yaml",
-    defaultValue: 2,
+    defaultValue: undefined,
   })
   indent(arg: string): number {
     return parseInt(arg, 10);
