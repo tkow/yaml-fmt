@@ -37,7 +37,7 @@ export const applyFmtFromJsonToYaml = (
 
 // TODO: target keyを正規表現で引っ掛けられるようにする
 function recursiveSort(
-  json: Record<string, any>,
+  json: Record<string, any> | undefined,
   targetKey: string,
   priorityKeys: string[]
 ) {
@@ -46,6 +46,8 @@ function recursiveSort(
   const _nestKey = targetKey.slice(firstDotIndex + 1);
   const _key = nestKeyExists ? targetKey.slice(0, firstDotIndex) : _nestKey;
 
+  if(!json) return
+
   if (nestKeyExists) {
     if (_key === "[]") {
       (json[_key] as Array<any>).forEach((value) => {
@@ -53,7 +55,7 @@ function recursiveSort(
       });
     } else if (_key === "*") {
       Object.keys(json).forEach((key) => {
-        recursiveSort(json[key], _nestKey, priorityKeys);
+        recursiveSort(json![key], _nestKey, priorityKeys);
       });
     } else {
       recursiveSort(json[_key], _nestKey, priorityKeys);
@@ -63,7 +65,7 @@ function recursiveSort(
       json = prioritySort(json, priorityKeys);
     } else if (_key === "*") {
       Object.keys(json).forEach((key) => {
-        json[key] = prioritySort(json[key], priorityKeys);
+        json![key] = prioritySort(json![key], priorityKeys);
       });
     } else {
       json[_key] = prioritySort(json[_key], priorityKeys);
