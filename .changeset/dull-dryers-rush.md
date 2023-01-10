@@ -2,4 +2,4 @@
 "yaml-fmt": patch
 ---
 
-version up
+fix: undefined error
