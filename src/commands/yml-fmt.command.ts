@@ -69,7 +69,7 @@ export class YamlFmtCommand extends CommandRunner {
     flags: "-r --root",
     name: "root",
     description: "sort all object keys before applying configuration",
-    defaultValue: false,
+    defaultValue: undefined,
   })
   forceFlag(): boolean {
     return true;
