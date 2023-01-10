@@ -10,7 +10,7 @@ export const applySortFiles = async (
   globPaths: string,
   options?: SortOptions
 ) => {
-  const files = glob.sync(globPaths);
+  const files = glob.sync(globPaths).filter(filePath => fs.statSync(filePath).isFile());
   try {
     const promises = files.map((file) => {
       const doc: Record<string, any> = yaml.load(
