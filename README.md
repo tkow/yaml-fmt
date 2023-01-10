@@ -21,6 +21,7 @@ The configuration file is json.
 - root: Array<string> | true: If you set boolean flag to it, sort root properties, and if specifying string array, the key is priotized.
 - indent: set indent number of output yaml
 - all: sort all properties before applying sort by configuration.
+- lineWidth: max line width of output yaml.
 
 ```json
 {

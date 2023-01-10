@@ -6,16 +6,17 @@ export type SortOptions = {
   targets?: Record<string, true | string[]>;
   indent?: number;
   dryRun?: boolean;
+  lineWidth?: number
 };
 
 export const applyFmtFromJsonToYaml = (
   json: object,
   options?: SortOptions
 ): string => {
-  const { indent = 2, targets = {}, root = false, all = false } = options || {};
+  const { indent = 2, targets = {}, root = false, all = false, lineWidth = -1 } = options || {};
 
   if (Object.keys(targets).length <= 0) {
-    return yaml.dump(json, { sortKeys: true, indent });
+    return yaml.dump(json, { sortKeys: true, indent, lineWidth});
   }
 
   let current = all ? JSON.parse(yaml.dump(json, { sortKeys: true })) : json;
@@ -32,7 +33,7 @@ export const applyFmtFromJsonToYaml = (
     );
   });
 
-  return yaml.dump(current, { indent });
+  return yaml.dump(current, { indent, lineWidth });
 };
 
 // TODO: target keyを正規表現で引っ掛けられるようにする

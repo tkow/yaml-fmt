@@ -5,7 +5,7 @@ import { applySortFiles, SortOptions } from "../utils/yaml-fmt";
 
 type YamlFmtCommandOptions = {
   config?: string;
-} & Pick<SortOptions, "all" | "root" | "dryRun" | "indent">;
+} & Pick<SortOptions, "all" | "root" | "dryRun" | "indent" | 'lineWidth'>;
 
 @Command({
   name: "fmt",
@@ -21,7 +21,7 @@ export class YamlFmtCommand extends CommandRunner {
   }
 
   async run(targetFiles: string[], options: YamlFmtCommandOptions) {
-    const { all, dryRun, root, indent, config: configPath } = options;
+    const { all, dryRun, root, indent, config: configPath, lineWidth: lineWidth } = options;
     const _configPath = configPath
       ? configPath.startsWith("/")
         ? configPath
@@ -38,6 +38,7 @@ export class YamlFmtCommand extends CommandRunner {
         root: root ?? fromFile.root,
         indent: indent ?? fromFile.indent,
         targets,
+        lineWidth: lineWidth ?? fromFile.lineWidth
       });
     });
     await Promise.all(results);
@@ -92,5 +93,15 @@ export class YamlFmtCommand extends CommandRunner {
   })
   config(arg: string): string {
     return arg;
+  }
+
+  @Option({
+    flags: "-l --line-width <lineWidth>",
+    name: "lineWidth",
+    description: "max lineWidth for output yaml",
+    defaultValue: undefined,
+  })
+  lineWidth(arg: string): number {
+    return parseInt(arg, 10);
   }
 }
