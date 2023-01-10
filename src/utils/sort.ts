@@ -49,8 +49,8 @@ function recursiveSort(
   if(!json) return
 
   if (nestKeyExists) {
-    if (_key === "[]") {
-      (json[_key] as Array<any>).forEach((value) => {
+    if (_key === "[]" && Array.isArray(json[_key])) {
+      json[_key].forEach((value: any) => {
         recursiveSort(value, _nestKey, priorityKeys);
       });
     } else if (_key === "*") {
@@ -61,13 +61,14 @@ function recursiveSort(
       recursiveSort(json[_key], _nestKey, priorityKeys);
     }
   } else {
-    if (_key === "[]") {
+    if (_key === "[]" && Array.isArray(json)) {
       json = prioritySort(json, priorityKeys);
     } else if (_key === "*") {
       Object.keys(json).forEach((key) => {
         json![key] = prioritySort(json![key], priorityKeys);
       });
-    } else {
+    } else if(json[_key]) {
+
       json[_key] = prioritySort(json[_key], priorityKeys);
     }
   }

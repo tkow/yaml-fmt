@@ -169,4 +169,35 @@ b:
 `.trimStart()
     );
   });
+
+  it("skip sort with undefined key", () => {
+    const data = Sort.applyFmtFromJsonToYaml(
+      {
+        properties: {
+          id: {
+            type: "number",
+          },
+          a: {
+            type: "string",
+          },
+        },
+      },
+      {
+        targets: {
+          properties: ["id"],
+          "properties.*.enum.[]": true,
+        },
+      }
+    );
+    expect(data).toEqual(
+      `
+properties:
+  id:
+    type: number
+  a:
+    type: string
+`.trimStart()
+    );
+  });
+
 });
