@@ -1,8 +1,11 @@
 import { Command, CommandRunner, Option } from "nest-commander";
 import path from "path";
-import { applySortFiles, SortOptions } from '../utils/yaml-fmt'
+import fs from "fs";
+import { applySortFiles, SortOptions } from "../utils/yaml-fmt";
 
-type YamlFmtCommandOptions = SortOptions
+type YamlFmtCommandOptions = {
+  config?: string;
+} & Pick<SortOptions, "all" | "root" | "dryRun" | "indent">;
 
 @Command({
   name: "yaml-fmt",
@@ -13,46 +16,78 @@ type YamlFmtCommandOptions = SortOptions
   },
 })
 export class YamlFmtCommand extends CommandRunner {
-
   constructor() {
     super();
   }
 
-  async run(zipFiles: string[], options: YamlFmtCommandOptions) {
-    const { force, archive, out } = options;
-
+  async run(targetFiles: string[], options: YamlFmtCommandOptions) {
+    const { all, dryRun, root, indent, config: configPath } = options;
+    const _configPath = configPath
+      ? configPath.startsWith("/")
+        ? configPath
+        : path.resolve(process.cwd(), configPath)
+      : "";
+    const { targets }: Partial<SortOptions> =(_configPath
+      ? fs.readFileSync(_configPath).toJSON()
+      : {})  as Partial<SortOptions>;
+    targetFiles.forEach((files) => {
+      applySortFiles(files, {
+        all,
+        dryRun,
+        root,
+        indent,
+        targets,
+      });
+    });
   }
 
   @Option({
-    flags: "-o --out <out>",
-    name: "out",
-    description: "Output directory extartced to.",
-    defaultValue: path.resolve(process.cwd(), "out"),
+    flags: "-a --all",
+    name: "all",
+    description: "sort all object keys before applying configuration",
+    defaultValue: false,
   })
-  parseOut(arg: string): string {
-    return arg;
+  all(): boolean {
+    return true;
   }
 
   @Option({
-    flags: "-a --archive [archiveLevel]",
-    name: "archiveLevel",
-    description: "archive extracted files again.",
-    defaultValue: null as any as number,
+    flags: "-d --dry-run",
+    name: "dryRun",
+    description: "sort all object keys before applying configuration",
+    defaultValue: false,
   })
-  parseArchive(
-    arg: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-  ): number {
-    return parseInt(arg, 10) ?? 9;
+  dryRun(): boolean {
+    return true;
   }
 
   @Option({
-    flags: "-f --force",
-    name: "force",
-    description:
-      "force all zip files unified with overwriting duplicated files followed by one.",
+    flags: "-r --root",
+    name: "root",
+    description: "sort all object keys before applying configuration",
     defaultValue: false,
   })
   forceFlag(): boolean {
     return true;
+  }
+
+  @Option({
+    flags: "-i --indent",
+    name: "indent",
+    description: "output indent yaml",
+    defaultValue: 2,
+  })
+  indent(arg: string): number {
+    return parseInt(arg, 10);
+  }
+
+  @Option({
+    flags: "-c --config",
+    name: "config",
+    description: "sort config",
+    defaultValue: undefined,
+  })
+  config(arg: string): string {
+    return arg;
   }
 }
