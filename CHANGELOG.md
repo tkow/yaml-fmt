@@ -1,5 +1,11 @@
 # yaml-fmt
 
+## 0.0.5
+
+### Patch Changes
+
+- 160b9e2: feat: add lineWidth option
+
 ## 0.0.4
 
 ### Patch Changes
