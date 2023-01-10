@@ -1,5 +1,11 @@
 # yaml-fmt
 
+## 0.0.3
+
+### Patch Changes
+
+- fix: undefined error
+
 ## 0.0.2
 
 ### Patch Changes
