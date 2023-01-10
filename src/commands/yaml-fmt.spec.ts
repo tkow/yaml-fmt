@@ -1,16 +1,16 @@
 import { CommandTestFactory } from "nest-commander-testing";
-import { UnifyCommand } from "./unify";
+import { YamlFormatCommand } from "./YamlFormat";
 import { ArchiveService } from "../services/archive.service";
 import { TestingModule } from "@nestjs/testing";
 import { Module } from "@nestjs/common";
 import fs from "fs";
 
 @Module({
-  providers: [UnifyCommand, ArchiveService],
+  providers: [YamlFormatCommand, ArchiveService],
 })
 class TestModule {}
 
-describe("unify.ts", () => {
+describe("YamlFormat.ts", () => {
   let commandInstance!: TestingModule;
 
   beforeEach(async () => {
@@ -23,7 +23,7 @@ describe("unify.ts", () => {
     it("success", async () => {
       const outpath = "tmp/unified/normal";
       await CommandTestFactory.run(commandInstance, [
-        "unify",
+        "YamlFormat",
         "-o",
         outpath,
         "fixtures/zip-a-content.zip",
@@ -43,7 +43,7 @@ describe("unify.ts", () => {
     it("success force", async () => {
       const outpath = "tmp/unified/force";
       await CommandTestFactory.run(commandInstance, [
-        "unify",
+        "YamlFormat",
         "-f",
         "-o",
         outpath,
@@ -64,7 +64,7 @@ describe("unify.ts", () => {
     it("archive normal", async () => {
       const outpath = "tmp/unified/archive-f";
       const runPromise = CommandTestFactory.run(commandInstance, [
-        "unify",
+        "YamlFormat",
         "-a",
         "9",
         "-o",
@@ -77,7 +77,7 @@ describe("unify.ts", () => {
     it("archive force", async () => {
       const outpath = "tmp/unified/archive-f";
       await CommandTestFactory.run(commandInstance, [
-        "unify",
+        "YamlFormat",
         "-a",
         "9",
         "-f",

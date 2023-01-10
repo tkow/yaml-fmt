@@ -3,7 +3,7 @@ import { CommandModule } from "./command.module";
 
 export async function run() {
   await CommandFactory.run(CommandModule, {
-    cliName: "zippee",
+    cliName: "yaml-fmt",
     logger: ["warn", "error"],
   });
 }

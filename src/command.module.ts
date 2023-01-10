@@ -1,8 +1,7 @@
 import { Module } from "@nestjs/common";
-import { Services } from "./services";
-import { Commands } from "./commands";
+import { YamlFmtCommand } from "./commands/yml-fmt.command";
 
 @Module({
-  providers: [...Services, ...Commands],
+  providers: [YamlFmtCommand],
 })
 export class CommandModule {}
