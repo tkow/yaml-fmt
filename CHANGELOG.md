@@ -1,5 +1,11 @@
 # yaml-fmt
 
+## 0.0.6
+
+### Patch Changes
+
+- 674369c: fix: indent
+
 ## 0.0.5
 
 ### Patch Changes
