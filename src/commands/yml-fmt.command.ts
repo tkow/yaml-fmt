@@ -8,7 +8,7 @@ type YamlFmtCommandOptions = {
 } & Pick<SortOptions, "all" | "root" | "dryRun" | "indent">;
 
 @Command({
-  name: "yaml-fmt",
+  name: "fmt",
   description: `format yaml files specified by regexp`,
   arguments: "<regexp...>",
   argsDescription: {
@@ -27,18 +27,21 @@ export class YamlFmtCommand extends CommandRunner {
         ? configPath
         : path.resolve(process.cwd(), configPath)
       : "";
-    const { targets }: Partial<SortOptions> =(_configPath
-      ? fs.readFileSync(_configPath).toJSON()
+
+    const { targets, ...fromFile }: Partial<SortOptions> =(_configPath
+      ? JSON.parse(fs.readFileSync(_configPath).toString())
       : {})  as Partial<SortOptions>;
-    targetFiles.forEach((files) => {
-      applySortFiles(files, {
-        all,
+    const results = targetFiles.map((files) => {
+      return applySortFiles(files, {
+        all: all ?? fromFile.all,
         dryRun,
-        root,
-        indent,
+        root: root ?? fromFile.root,
+        indent: indent ?? fromFile.indent,
         targets,
       });
     });
+    await Promise.all(results)
+    console.log('done.')
   }
 
   @Option({
@@ -82,7 +85,7 @@ export class YamlFmtCommand extends CommandRunner {
   }
 
   @Option({
-    flags: "-c --config",
+    flags: "-c --config <config>",
     name: "config",
     description: "sort config",
     defaultValue: undefined,
