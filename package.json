@@ -9,7 +9,7 @@
     "format"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "cross-env NODE_ENV=\"production\" webpack && tsc",
     "build:watch": "webpack --watch",
     "lint:ci": "npm run fmt",
