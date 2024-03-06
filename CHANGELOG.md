@@ -1,5 +1,11 @@
 # yaml-fmt
 
+## 0.0.8
+
+### Patch Changes
+
+- cb7de1f: make it work with only root parameters
+
 ## 0.0.7
 
 ### Patch Changes
