@@ -170,6 +170,76 @@ b:
     );
   });
 
+  it("sort root only parameters", () => {
+    const data = Sort.applyFmtFromJsonToYaml(
+      {
+        b: {
+          target: {
+            b: 1,
+            a: 2,
+          },
+        },
+
+        a: {
+          target: {
+            b: 1,
+            a: 2,
+          },
+        },
+      },
+      {
+        root: true,
+      }
+    );
+    expect(data).toEqual(
+      `
+a:
+  target:
+    b: 1
+    a: 2
+b:
+  target:
+    b: 1
+    a: 2
+`.trimStart()
+    );
+  });
+
+  it("sort root only parameters with array", () => {
+    const data = Sort.applyFmtFromJsonToYaml(
+      {
+        a: {
+          target: {
+            b: 1,
+            a: 2,
+          },
+        },
+
+        b: {
+          target: {
+            b: 1,
+            a: 2,
+          },
+        },
+      },
+      {
+        root: ['b', 'a'],
+      }
+    );
+    expect(data).toEqual(
+      `
+b:
+  target:
+    b: 1
+    a: 2
+a:
+  target:
+    b: 1
+    a: 2
+`.trimStart()
+    );
+  });
+
   it("skip sort with undefined key", () => {
     const data = Sort.applyFmtFromJsonToYaml(
       {

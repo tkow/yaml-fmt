@@ -15,7 +15,7 @@ export const applyFmtFromJsonToYaml = (
 ): string => {
   const { indent = 2, targets = {}, root = false, all = false, lineWidth = -1 } = options || {};
 
-  if (Object.keys(targets).length <= 0) {
+  if (Object.keys(targets).length <= 0 && !root) {
     return yaml.dump(json, { sortKeys: true, indent, lineWidth});
   }
 
